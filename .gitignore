@@ -6,4 +6,4 @@ venv/
 .pylintrc
 .flake8
 
-lyceum/settings.py
+settings.py
