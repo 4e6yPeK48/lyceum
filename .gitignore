@@ -5,3 +5,5 @@ venv/
 # Файлы настроек
 .pylintrc
 .flake8
+
+lyceum/settings.py
