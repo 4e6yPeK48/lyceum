@@ -1,9 +1,9 @@
-# Виртуальные окружения
+# Папки
 venv/
 .idea/
+lyceum/
 
 # Файлы настроек
 .pylintrc
 .flake8
 
-settings.py
