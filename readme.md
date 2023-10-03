@@ -6,12 +6,15 @@
 
 1. Создайте и активируйте виртуальное окружение (cmd в папке проекта):  \
    python -m venv venv  \
-   source venv/bin/activate # для unix/linux  \
-   venv\Scripts\activate # для windows  \
-   ... # сами через pycharm/другую ide
+   Далее:  \
+   source venv/bin/activate  # для unix/linux  \
+   venv\Scripts\activate  # для windows  \
+   ...  # или сами через pycharm/другую ide
 
 2. Установите зависимости:  \
-   pip install -r requirements.txt
+   pip install -r requirements/prod.txt  # для прода \
+   pip install -r requirements/test.txt  # для тестов \
+   pip install -r requirements/dev.txt  # для разработки и линтинга
 
 3. Выполните миграции базы данных (если они есть):  \
    python manage.py migrate

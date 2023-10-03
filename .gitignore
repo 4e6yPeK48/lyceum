@@ -6,4 +6,4 @@ lyceum/
 # Файлы настроек
 .pylintrc
 .flake8
-
+.env

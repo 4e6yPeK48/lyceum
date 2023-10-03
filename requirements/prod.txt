@@ -1,0 +1,8 @@
+Django==4.2.5
+aiohttp==3.8.5
+charset-normalizer==3.3.0
+idna==3.4
+jsonschema==4.19.1
+jsonschema-specifications==2023.7.1
+multidict==6.0.4
+yarl==1.9.2
