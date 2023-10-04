@@ -2,9 +2,11 @@ name: Python package
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -16,20 +18,66 @@ jobs:
         python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install prod dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements/prod.txt ]; then pip install -r requirements/prod.txt; fi
-    - name: Check for flake8
+        pip install -r requirements/prod.txt
+
+    - name: Install test and development dependencies
       run: |
-        if python -c "import flake8" &> /dev/null; then
-          flake8 . --count --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-        else
-          echo "flake8 is not installed, skipping linting."
-        fi
+        # Устанавливаем дополнительные зависимости для проверки кода и разработки
+        pip install -r requirements/test.txt -r requirements/dev.txt
+
+    - name: Run tests
+      run: |
+        # Запустить тесты
+
+    - name: Check code style (flake8)
+      run: |
+        # Проверка стиля кода с помощью flake8
+        flake8 . --count --show-source --statistics --extend-ignore=E501
+        # Проверка имён по PEP8, порядка импортов и кавычек через плагины к flake8
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --extend-ignore=E501,E722,W503
+
+    - name: Check code formatting (black)
+      run: |
+        # Проверка форматирования кода с помощью black
+        black --check .
+
+    - name: Check code formatting (isort)
+      run: |
+        # Проверка порядка импортов с помощью isort
+        isort --check .
+
+    - name: Check code formatting (codespell)
+      run: |
+        # Проверка орфографии в коде с помощью codespell
+        codespell .
+
+    - name: Check for security vulnerabilities (bandit)
+      run: |
+        # Проверка на наличие общих уязвимостей с помощью bandit
+        bandit -r .
+
+    - name: Check documentation style (pydocstyle)
+      run: |
+        # Проверка стиля документации с помощью pydocstyle
+        pydocstyle .
+
+    - name: Check for type hinting (mypy)
+      run: |
+        # Проверка типизации кода с помощью mypy
+        mypy .
+
+    - name: Check for common security issues (safety)
+      run: |
+        # Проверка наличия известных уязвимостей в зависимостях с помощью safety
+        safety check --full-report
